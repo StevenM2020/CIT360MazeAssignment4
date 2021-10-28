@@ -1,5 +1,6 @@
 ﻿/* Program: MazeClass
  * Author:  Steven Motz
+ * Editor:  Ethan Lehutsky
  * Purpose: This is used for making a maze object, holding all its data, and methods to modify that data.
  * Date:    10/25/2021
  */
@@ -24,7 +25,7 @@ public class MazeClass : MonoBehaviour
     }
 
     // fills the maze
-    public void generateMaze(int dencity)
+    public void generateMaze(int density)
     {
 
 
@@ -45,7 +46,7 @@ public class MazeClass : MonoBehaviour
                     */
                     intMaze[i, j, k] = (i == 0 || i == intMaze.GetLength(0) - 1 ||
                         k == 0 || k == intMaze.GetLength(2) - 1) ? 2 : (j == 0 || j == intMaze.GetLength(1) - 1) 
-                        ? 3 : ((int)rnd.Next(100) > dencity ? 1 : 0);
+                        ? 3 : ((int)rnd.Next(100) > density ? 1 : 0);
                 }
             }
         }
