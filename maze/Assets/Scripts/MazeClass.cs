@@ -12,8 +12,6 @@ public class MazeClass : MonoBehaviour
         {
         intMaze = new int[x+2, y+2, z+2];
 
-
-
     }
 
     public void generateMaze(int dencity)
@@ -27,8 +25,9 @@ public class MazeClass : MonoBehaviour
             {
                 for (int k = 0; k < intMaze.GetLength(2); k++)
                 { 
-                    intMaze[i, j, k] = (i == 0 || i == intMaze.GetLength(0) - 1 || j == 0 || j == intMaze.GetLength(1) - 1 ||
-                        k == 0 || k == intMaze.GetLength(2) - 1) ? 1 : ((int)rnd.Next(100) > dencity ? 1 : 0);
+                    intMaze[i, j, k] = (j == 0 || j == intMaze.GetLength(1) - 1 ||
+                        k == 0 || k == intMaze.GetLength(2) - 1) ? 2 : (i == 0 || i == intMaze.GetLength(0) - 1) 
+                        ? 3 : ((int)rnd.Next(100) > dencity ? 1 : 0);
                 }
             }
         }
@@ -49,5 +48,17 @@ public class MazeClass : MonoBehaviour
         }
 
         return str;
+    }
+    public bool isWall(int x, int y, int z)
+    {
+        return intMaze[x,y,z] == 1 || intMaze[x, y, z] == 2 || intMaze[x, y, z] == 3;
+    }
+    public bool isOuterWall(int x, int y, int z)
+    {
+        return intMaze[x, y, z] == 2;
+    }
+    public bool isTopBottom(int x, int y, int z)
+    {
+        return intMaze[x, y, z] == 3;
     }
 }
