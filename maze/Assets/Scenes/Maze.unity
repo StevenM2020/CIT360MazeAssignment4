@@ -330,7 +330,7 @@ MonoBehaviour:
   topOrBottomMaterial: {fileID: 2100000, guid: 8f26a7ca034131e4b96a13fdbcffc3ef, type: 2}
   searchMaterial: {fileID: 2100000, guid: a8b8300f4dfc4ee458779f0c026819c6, type: 2}
   startEndMaterial: {fileID: 2100000, guid: f03125f9b95aa6845bfead56d537047f, type: 2}
-  dencity: 65
-  intX: 50
+  dencity: 70
+  intX: 100
   intY: 1
-  intZ: 50
+  intZ: 100

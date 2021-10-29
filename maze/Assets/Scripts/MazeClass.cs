@@ -84,14 +84,14 @@ public class MazeClass : MonoBehaviour
         return intMaze[x, y, z] == 3;
     }
 
-    //chooses that start and end point randomly
+    //chooses a start and end point randomly
     public void pickStartandEnd()
     {
         bool setStart = false;
         bool setEnd = false;
         System.Random rnd = new System.Random();
 
-        // repeats until it finds and empty spot
+        // repeats until it finds and empty spot for start
         while (!setStart)
         {
             int x = rnd.Next(intMaze.GetLength(0) -1), y = rnd.Next(intMaze.GetLength(1) - 1), z = rnd.Next(intMaze.GetLength(2) - 1);
@@ -102,10 +102,9 @@ public class MazeClass : MonoBehaviour
                 intMaze[x, y, z] = 4;
 
             }
-            Debug.Log(string.Join("start ", x, y, z));
 
         }
-        // repeats until it finds and empty spot
+        // repeats until it finds and empty spot for end
         while (!setEnd)
         {
             int x = rnd.Next(intMaze.GetLength(0) - 1), y = rnd.Next(intMaze.GetLength(1) - 1), z = rnd.Next(intMaze.GetLength(2) - 1);
@@ -115,7 +114,6 @@ public class MazeClass : MonoBehaviour
                 endLocation = new int[3] { x, y, z };
                 intMaze[x, y, z] = 5;
             }
-            Debug.Log(string.Join("end ", x, y, z));
         }
     }
 
