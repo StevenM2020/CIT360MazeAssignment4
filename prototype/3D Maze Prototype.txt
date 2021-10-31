@@ -1,0 +1,11 @@
+The Minecraft 3D Prototype
+---------------------------
+Created to help understand what a 3D maze would look like and how it would function.
+
+Due to having 6 directions of movement, it is more complex than a typical maze. It can more north, east, south, west, up, and down.
+
+Helped analyze and get a clear understanding on how the algorithm will function.
+
+The golden blocks represent the boarders / walls while the scaffolding represents where the user can move up or down.
+
+Created by Andy Jackowski
