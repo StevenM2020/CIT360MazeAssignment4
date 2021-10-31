@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 /*
- *Authors: Ethan Lehutsky and Steven Motz
+ *Authors: Ethan Lehutsky, Andy Jackowski, & Steven Motz
  *Purpose: A event handler that links the methods from Maze controller to the GUI interface
  */
 
@@ -13,6 +13,7 @@ public class EventController : MonoBehaviour
 {
     int intStage = 0;
     int intDensity = 65;
+    int intCameraRotate = 0;
 
 
     public GameObject stageButton;
@@ -22,6 +23,9 @@ public class EventController : MonoBehaviour
     public GameObject textZ;
     public GameObject densitySlider;
     public Camera camera1;
+    public GameObject cameraslider1;
+    public GameObject debugtext1;
+    public GameObject debugtext2;
 
     public Material cubeMaterial;
     public Material outerwallMaterial;
@@ -29,6 +33,8 @@ public class EventController : MonoBehaviour
 
     private int intDFS, intBFS;
     public void stageButtonController()
+
+
     {
         
 
@@ -37,34 +43,48 @@ public class EventController : MonoBehaviour
             case 0: // maze generation
                 if(int.Parse(textX.GetComponent<InputField>().text) > 5 && int.Parse(textY.GetComponent<InputField>().text) >= 1 && int.Parse(textZ.GetComponent<InputField>().text) > 5)
                 {
-                    // both consoles should say maze generation started *************
-                    this.GetComponent<MazeController>().mazeGen(int.Parse(textX.GetComponent<InputField>().text), int.Parse(textY.GetComponent<InputField>().text), int.Parse(textZ.GetComponent<InputField>().text), intDensity);
-                    intStage++;
-                    camera1.transform.position = new Vector3(int.Parse(textX.GetComponent<InputField>().text) / 2, int.Parse(textY.GetComponent<InputField>().text) + 20, int.Parse(textZ.GetComponent<InputField>().text)/2);
-                    // both consoles should say maze generation finished, maze size: (x * y * z) **********
-                    stageButtonText.GetComponent<Text>().text = "Set Start/End";
+                    if (int.Parse(textX.GetComponent<InputField>().text) * int.Parse(textY.GetComponent<InputField>().text) * int.Parse(textZ.GetComponent<InputField>().text) < 1000)
+                        {
+                        debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Maze generation started";
+                        debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Maze generation started";
+                        this.GetComponent<MazeController>().mazeGen(int.Parse(textX.GetComponent<InputField>().text), int.Parse(textY.GetComponent<InputField>().text), int.Parse(textZ.GetComponent<InputField>().text), intDensity);
+                        intStage++;
+                        camera1.transform.position = new Vector3(int.Parse(textX.GetComponent<InputField>().text) / 2, int.Parse(textY.GetComponent<InputField>().text) + 20, int.Parse(textZ.GetComponent<InputField>().text) / 2);
+                        debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Maze generation finished, maze size: " + (int.Parse(textX.GetComponent<InputField>().text) * int.Parse(textY.GetComponent<InputField>().text) * int.Parse(textZ.GetComponent<InputField>().text));
+                        debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Maze generation finished, maze size: " + (int.Parse(textX.GetComponent<InputField>().text) * int.Parse(textY.GetComponent<InputField>().text) * int.Parse(textZ.GetComponent<InputField>().text));
+                        stageButtonText.GetComponent<Text>().text = "Set Start/End";
+
+                       
+                    }
+                    else
+                    {
+                        debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Values are too large to compute";
+                        debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Values are too large to compute";
+                    }
                 }
                 else
                 {
-                    // both consoles need to say "maze size is too small" ************************************* <- to be notest
+                    debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Maze is too small";
+                    debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Maze is too small";
                 }
                 break;
             case 1: // set start/end
-                // both consoles should say setting starting point and ending point *************
+                debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Setting starting point and ending point";
+                debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Setting starting point and ending point";
                 this.GetComponent<MazeController>().mazeStartAndEnd();
                 intStage++;
                 stageButtonText.GetComponent<Text>().text = "DFS";
                 break;
             case 2: // DFS
-                // DFS console should say starting DFS **********
+                debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Starting DFS";
                 intDFS = this.GetComponent<MazeController>().runDFS();
                 if(intDFS == -1)
                 {
-                    // DFS console should say could not find a path or something **********
+                    debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Could not find a path";
                 }
                 else
                 {
-                    // DFS console should say Finished DFS, path size intDFS **********
+                    debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Finished DFS, path size: " + intDFS;
                 }
                 intStage++;
                 stageButtonText.GetComponent<Text>().text = "BFS";
@@ -72,14 +92,13 @@ public class EventController : MonoBehaviour
             case 3: // BFS
                 if (intDFS == -1)
                 {
-                    // BFS console should say could not find a path or something **********
+                    debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Could not find a path";
                 }
                 else
                 {
-                    // BFS console should say starting DFS
+                    debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Starting BFS";
                     intBFS = this.GetComponent<MazeController>().runBFS();
-                    
-                    // BFS console should say Finished DFS, path size intBFS ********** 
+                    debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Finished BFS, path size: " + intBFS;
                 }
                 intStage++;
                 stageButtonText.GetComponent<Text>().text = "Restart";
@@ -104,6 +123,11 @@ public class EventController : MonoBehaviour
     public void dencitySliderUpdater()
     {
        intDensity = (int)densitySlider.GetComponent<Slider>().value;
+    }
+
+    public void Camera1SliderUpdate()
+    {
+        
     }
     void Start()
     {
