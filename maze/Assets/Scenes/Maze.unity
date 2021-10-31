@@ -225,8 +225,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1559525899}
   - component: {fileID: 1559525898}
-  - component: {fileID: 1559525897}
-  - component: {fileID: 1559525900}
   - component: {fileID: 1559525901}
   m_Layer: 0
   m_Name: Main Camera
@@ -235,14 +233,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1559525897
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559525896}
-  m_Enabled: 1
 --- !u!20 &1559525898
 Camera:
   m_ObjectHideFlags: 0
@@ -253,7 +243,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 0.4117647}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -301,18 +291,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &1559525900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559525896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1559525901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,6 +309,7 @@ MonoBehaviour:
   searchMaterial: {fileID: 2100000, guid: a8b8300f4dfc4ee458779f0c026819c6, type: 2}
   startEndMaterial: {fileID: 2100000, guid: f03125f9b95aa6845bfead56d537047f, type: 2}
   dencity: 70
-  intX: 100
+  intX: 50
   intY: 1
-  intZ: 100
+  intZ: 50
+  intCount: 0
