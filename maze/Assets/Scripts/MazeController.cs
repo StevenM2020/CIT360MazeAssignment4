@@ -25,6 +25,7 @@ public class MazeController : MonoBehaviour
     MazeClass maze;
     public int intCount = 0;
     Queue<string> queueBFS = new Queue<string>();
+    int intQ = 0;
    
     // this function generates and prints the maze
     public void mazeGen(int x, int y, int z, int intDensity)
@@ -99,7 +100,8 @@ public class MazeController : MonoBehaviour
     // this BFS function calls it self to find diffrent paths then chooses the shortest.
     public void BFS(Queue<string> queue, int[] current)
     {
-        if (queue.Count < intX*intY*intZ)
+        intQ++;
+        if (intQ < intX*intY*intZ*100)
         {
             int[] end = maze.getEndLocation();
             queue.Enqueue(current[0] + "," + current[1] + "," + current[2]);
