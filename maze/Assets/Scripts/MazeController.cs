@@ -19,14 +19,14 @@ public class MazeController : MonoBehaviour
     public Material searchMaterial;
     public Material startEndMaterial;
 
-    public int density;
+
     private int maze2Offset = 1000;
     public int intX = 50, intY = 1, intZ = 50;
     MazeClass maze;
     public int intCount = 0;
     Queue<string> queueBFS = new Queue<string>();
     int intQ = 0;
-   
+    int intMQ = 0;
     // this function generates and prints the maze
     public void mazeGen(int x, int y, int z, int intDensity)
     {
@@ -34,7 +34,7 @@ public class MazeController : MonoBehaviour
         intX = x;
         intY = y;
         intZ = z;
-        
+
         maze = new MazeClass(intX, intY, intZ);
         maze.generateMaze(intDensity);
         showMaze();
@@ -83,7 +83,7 @@ public class MazeController : MonoBehaviour
         Debug.Log(queueBFS.Count + " test");
 
         int count = queueBFS.Count;
-        for (int i = 0; i < count; i++)
+        for (int i = 1; i < count; i++)
         {
             // draw in maze
             string[] nextstring = queueBFS.Dequeue().Split(',');
@@ -95,50 +95,197 @@ public class MazeController : MonoBehaviour
             cube.isStatic = true;
 
         }
+        Debug.Log(" max = " + intMQ);
         return count;
     }
     // this BFS function calls it self to find diffrent paths then chooses the shortest.
     public void BFS(Queue<string> queue, int[] current)
     {
-        intQ++;
-        if (intQ < intX*intY*intZ*100)
+        if (intMQ < queue.Count)
+        {
+            intMQ = queue.Count;
+        }
+
+        if (queue.Count < intX * intY * intZ)
         {
             int[] end = maze.getEndLocation();
             queue.Enqueue(current[0] + "," + current[1] + "," + current[2]);
             if (current[0] == end[0] && current[1] == end[1] && current[2] == end[2])
             {
+                intQ++;
                 if (queueBFS.Count == 0 || queueBFS.Count > queue.Count)
                 {
                     queueBFS = new Queue<string>(queue);
                 }
             }
-            if (maze.BFSCheck(current[0] + 1, current[1], current[2]) && !queue.Contains((current[0] + 1) + "," + current[1] + "," + current[2])) // x + 1
+            else
             {
-                BFS(new Queue<string>(queue), new int[] { current[0] + 1, current[1], current[2] });
-            }
-            if (maze.BFSCheck(current[0] - 1, current[1], current[2]) && !queue.Contains((current[0] - 1) + "," + current[1] + "," + current[2])) // x -1
-            {
-                BFS(new Queue<string>(queue), new int[] { current[0] - 1, current[1], current[2] });
-            }
-            if (maze.BFSCheck(current[0], current[1] + 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] + 1) + "," + current[2])) // y + 1
-            {
-                BFS(new Queue<string>(queue), new int[] { current[0], current[1] + 1, current[2] });
-            }
-            if (maze.BFSCheck(current[0], current[1] - 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] - 1) + "," + current[2])) // y -1
-            {
-                BFS(new Queue<string>(queue), new int[] { current[0], current[1] - 1, current[2] });
-            }
-            if (maze.BFSCheck(current[0], current[1], current[2] + 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] + 1))) // z + 1
-            {
-                BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] + 1 });
-            }
-            if (maze.BFSCheck(current[0], current[1], current[2] - 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] - 1))) // z - 1
-            {
-                BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] - 1 });
+                if (current[0] < end[0] && maze.BFSCheck(current[0] + 1, current[1], current[2]) && !queue.Contains((current[0] + 1) + "," + current[1] + "," + current[2]))
+                {
+                    if (maze.BFSCheck(current[0] + 1, current[1], current[2]) && !queue.Contains((current[0] + 1) + "," + current[1] + "," + current[2])) // x + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] + 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0] - 1, current[1], current[2]) && !queue.Contains((current[0] - 1) + "," + current[1] + "," + current[2])) // x -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] - 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] + 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] + 1) + "," + current[2])) // y + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] + 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] - 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] - 1) + "," + current[2])) // y -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] - 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] + 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] + 1))) // z + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] + 1 });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] - 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] - 1))) // z - 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] - 1 });
+                    }
+                }
+                else if (current[0] > end[0] && maze.BFSCheck(current[0] - 1, current[1], current[2]) && !queue.Contains((current[0] - 1) + "," + current[1] + "," + current[2]))
+                {
+                    if (maze.BFSCheck(current[0] - 1, current[1], current[2]) && !queue.Contains((current[0] - 1) + "," + current[1] + "," + current[2])) // x -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] - 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0] + 1, current[1], current[2]) && !queue.Contains((current[0] + 1) + "," + current[1] + "," + current[2])) // x + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] + 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] + 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] + 1) + "," + current[2])) // y + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] + 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] - 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] - 1) + "," + current[2])) // y -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] - 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] + 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] + 1))) // z + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] + 1 });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] - 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] - 1))) // z - 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] - 1 });
+                    }
+                }
+                else if (current[1] < end[1] && maze.BFSCheck(current[0], current[1] + 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] + 1) + "," + current[2]))
+                {
+                    if (maze.BFSCheck(current[0], current[1] + 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] + 1) + "," + current[2])) // y + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] + 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0] + 1, current[1], current[2]) && !queue.Contains((current[0] + 1) + "," + current[1] + "," + current[2])) // x + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] + 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0] - 1, current[1], current[2]) && !queue.Contains((current[0] - 1) + "," + current[1] + "," + current[2])) // x -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] - 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] - 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] - 1) + "," + current[2])) // y -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] - 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] + 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] + 1))) // z + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] + 1 });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] - 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] - 1))) // z - 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] - 1 });
+                    }
+                }
+                else if (current[1] > end[1] && maze.BFSCheck(current[0], current[1] - 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] - 1) + "," + current[2]))
+                {
+                    if (maze.BFSCheck(current[0], current[1] - 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] - 1) + "," + current[2])) // y -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] - 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0] + 1, current[1], current[2]) && !queue.Contains((current[0] + 1) + "," + current[1] + "," + current[2])) // x + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] + 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0] - 1, current[1], current[2]) && !queue.Contains((current[0] - 1) + "," + current[1] + "," + current[2])) // x -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] - 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] + 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] + 1) + "," + current[2])) // y + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] + 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] + 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] + 1))) // z + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] + 1 });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] - 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] - 1))) // z - 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] - 1 });
+                    }
+                }
+                else if (current[2] < end[2] && maze.BFSCheck(current[0], current[1], current[2] + 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] + 1)))
+                {
+                    if (maze.BFSCheck(current[0], current[1], current[2] + 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] + 1))) // z + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] + 1 });
+                    }
+                    if (maze.BFSCheck(current[0] + 1, current[1], current[2]) && !queue.Contains((current[0] + 1) + "," + current[1] + "," + current[2])) // x + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] + 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0] - 1, current[1], current[2]) && !queue.Contains((current[0] - 1) + "," + current[1] + "," + current[2])) // x -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] - 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] + 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] + 1) + "," + current[2])) // y + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] + 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] - 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] - 1) + "," + current[2])) // y -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] - 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] - 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] - 1))) // z - 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] - 1 });
+                    }
+                }
+                else if (current[2] > end[2] && maze.BFSCheck(current[0], current[1], current[2] - 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] - 1)))
+                {
+                    if (maze.BFSCheck(current[0], current[1], current[2] - 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] - 1))) // z - 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] - 1 });
+                    }
+                    if (maze.BFSCheck(current[0] + 1, current[1], current[2]) && !queue.Contains((current[0] + 1) + "," + current[1] + "," + current[2])) // x + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] + 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0] - 1, current[1], current[2]) && !queue.Contains((current[0] - 1) + "," + current[1] + "," + current[2])) // x -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0] - 1, current[1], current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] + 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] + 1) + "," + current[2])) // y + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] + 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1] - 1, current[2]) && !queue.Contains((current[0]) + "," + (current[1] - 1) + "," + current[2])) // y -1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1] - 1, current[2] });
+                    }
+                    if (maze.BFSCheck(current[0], current[1], current[2] + 1) && !queue.Contains((current[0]) + "," + current[1] + "," + (current[2] + 1))) // z + 1
+                    {
+                        BFS(new Queue<string>(queue), new int[] { current[0], current[1], current[2] + 1 });
+                    }
+                }
             }
         }
     }
-    
+
     // this method will call its self until it finds the end of the maze and sends the path back or it decides the maze cannot be solved 
     public Stack<int[]> DFS(Stack<int[]> stackDFS)
     {
@@ -244,7 +391,6 @@ public class MazeController : MonoBehaviour
                     }
                 }
             }
-
 
 
         }

@@ -32,37 +32,37 @@ public class EventController : MonoBehaviour
     public GameObject debugtext1;
     public GameObject debugtext2;
 
-    
+
 
     private int intDFS, intBFS;
 
-    
+
     public void stageButtonController()
 
 
     {
-       
+
 
         switch (intStage)
         {
             case 0: // maze generation
-                if(int.Parse(textX.GetComponent<InputField>().text) > 5 && int.Parse(textY.GetComponent<InputField>().text) >= 1 && int.Parse(textZ.GetComponent<InputField>().text) > 5)
+                if (int.Parse(textX.GetComponent<InputField>().text) > 5 && int.Parse(textY.GetComponent<InputField>().text) >= 1 && int.Parse(textZ.GetComponent<InputField>().text) > 5)
                 {
                     if (int.Parse(textX.GetComponent<InputField>().text) * int.Parse(textY.GetComponent<InputField>().text) * int.Parse(textZ.GetComponent<InputField>().text) < 10000)
-                        {
+                    {
                         debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Maze generation started";
                         debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Maze generation started";
                         this.GetComponent<MazeController>().mazeGen(int.Parse(textX.GetComponent<InputField>().text), int.Parse(textY.GetComponent<InputField>().text), int.Parse(textZ.GetComponent<InputField>().text), 70);
                         intStage++;
-                        camera1.transform.position = new Vector3(int.Parse(textX.GetComponent<InputField>().text) / 2, int.Parse(textY.GetComponent<InputField>().text) + 20, int.Parse(textZ.GetComponent<InputField>().text) / 2);
-                        camera2.transform.position = new Vector3(int.Parse(textX.GetComponent<InputField>().text) / 2 + 1000, int.Parse(textY.GetComponent<InputField>().text) + 20, int.Parse(textZ.GetComponent<InputField>().text) / 2);
+                        camera1.transform.position = new Vector3(int.Parse(textX.GetComponent<InputField>().text) / 2, int.Parse(textX.GetComponent<InputField>().text) > int.Parse(textZ.GetComponent<InputField>().text) ? int.Parse(textX.GetComponent<InputField>().text) : int.Parse(textZ.GetComponent<InputField>().text), int.Parse(textZ.GetComponent<InputField>().text) / 2);
+                        camera2.transform.position = new Vector3(int.Parse(textX.GetComponent<InputField>().text) / 2 + 1000, int.Parse(textX.GetComponent<InputField>().text) > int.Parse(textZ.GetComponent<InputField>().text) ? int.Parse(textX.GetComponent<InputField>().text) : int.Parse(textZ.GetComponent<InputField>().text), int.Parse(textZ.GetComponent<InputField>().text) / 2);
                         cameraPos.transform.position = new Vector3(int.Parse(textX.GetComponent<InputField>().text) / 2, int.Parse(textY.GetComponent<InputField>().text) + 5, int.Parse(textZ.GetComponent<InputField>().text) / 2);
                         cameraPos2.transform.position = new Vector3(int.Parse(textX.GetComponent<InputField>().text) / 2 + 1000, int.Parse(textY.GetComponent<InputField>().text) + 5, int.Parse(textZ.GetComponent<InputField>().text) / 2);
                         debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Maze generation finished, maze size: " + (int.Parse(textX.GetComponent<InputField>().text) * int.Parse(textY.GetComponent<InputField>().text) * int.Parse(textZ.GetComponent<InputField>().text));
                         debugtext2.GetComponent<Text>().text = debugtext2.GetComponent<Text>().text + "\n" + "Maze generation finished, maze size: " + (int.Parse(textX.GetComponent<InputField>().text) * int.Parse(textY.GetComponent<InputField>().text) * int.Parse(textZ.GetComponent<InputField>().text));
                         stageButtonText.GetComponent<Text>().text = "Set Start/End";
 
-                       
+
                     }
                     else
                     {
@@ -86,7 +86,7 @@ public class EventController : MonoBehaviour
             case 2: // DFS
                 debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Starting DFS";
                 intDFS = this.GetComponent<MazeController>().runDFS();
-                if(intDFS == -1)
+                if (intDFS == -1)
                 {
                     debugtext1.GetComponent<Text>().text = debugtext1.GetComponent<Text>().text + "\n" + "Could not find a path";
                 }
@@ -124,11 +124,11 @@ public class EventController : MonoBehaviour
     public void Camera1SliderUpdate()
     {
 
-        cameraPos.transform.eulerAngles = new Vector3( cameraPos.transform.eulerAngles.x,  cameraslider1.GetComponent<Slider>().value, cameraPos.transform.eulerAngles.z);
+        cameraPos.transform.eulerAngles = new Vector3(cameraPos.transform.eulerAngles.x, cameraslider1.GetComponent<Slider>().value, cameraPos.transform.eulerAngles.z);
     }
-    
-         
-    
+
+
+
     public void Camera2SliderUpdate()
     {
         cameraPos2.transform.eulerAngles = new Vector3(cameraPos2.transform.eulerAngles.x, cameraslider2.GetComponent<Slider>().value, cameraPos.transform.eulerAngles.z);
@@ -152,6 +152,9 @@ public class EventController : MonoBehaviour
         camera3.enabled = false;
 
     }
-   
+    public void exitMaze()
+    {
+        Application.Quit();
+    }
 
 }
